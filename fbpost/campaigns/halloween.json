@@ -1,44 +1,76 @@
 {
   "name": "Halloween",
-
-  "mainKeyword": "bánh Halloween",
-
-  "keywords": [
-    "bánh Halloween",
-    "bánh quy Halloween",
-    "Halloween cookie",
-    "icing cookie Halloween",
-    "bánh quy vẽ Halloween",
-    "quà Halloween",
-    "set bánh Halloween",
-    "bánh quy handmade Halloween"
+  "imageFolder": "C:\\Users\\ADMIN\\OneDrive\\Desktop\\autopost\\photos\\halloween",
+  "imageCount": 8,
+  "randomImages": true,
+  "mainKeyword": "Halloween Nails",
+  "sectionUrl": "https://www.etsy.com/shop/LoveCoatedNail?section_id=59451169",
+  "primaryKeywords": [
+    "Halloween Nails",
+    "Gothic Nails",
+    "press on nails"
   ],
-
+  "productKeywords": [
+    "Halloween Press On Nails",
+    "Gothic Press On Nails",
+    "Halloween Fake Nails",
+    "Gothic Fake Nails",
+    "Black Cat Eye Nails",
+    "Moonstone Nails",
+    "Chrome Halloween Nails",
+    "Luxury Halloween Nails",
+    "Handmade Halloween Nails",
+    "Personalized Halloween Nails"
+  ],
+  "audienceKeywords": [
+    "Halloween lovers",
+    "gothic fashion lovers",
+    "alternative fashion lovers",
+    "witchcore lovers",
+    "dark academia lovers",
+    "astrology lovers",
+    "cosplay lovers"
+  ],
   "angles": [
-    "quà Halloween",
-    "tiệc Halloween",
-    "bánh cho trẻ em",
-    "bánh chủ đề Halloween",
-    "set bánh Halloween",
-    "bánh Halloween cho bạn bè",
-    "bánh Halloween cho sự kiện"
+    "Halloween Nails",
+    "Gothic Nails",
+    "Halloween Press On Nails",
+    "Gothic Press On Nails",
+    "Black Cat Eye Nails",
+    "Moonstone Nails",
+    "Silver Chrome Gothic Nails",
+    "Luxury Gothic Nails",
+    "Elegant Halloween Nails",
+    "Dark Academia Nails",
+    "Witchcore Nails",
+    "Personalized Halloween Nails"
   ],
-
   "hashtags": [
-    "#halloween",
-    "#halloweencookie",
-    "#banhquyhalloween",
-    "#icingcookie",
-    "#banhquyve",
-    "#banhquyhandmade"
+    "#lovecoatednail",
+    "#halloweennails",
+    "#halloweenpresson",
+    "#gothicnails",
+    "#gothicpressonnails",
+    "#halloweennailsdesign",
+    "#blackcateyenails",
+    "#moonstonenails",
+    "#chromenails",
+    "#luxurynails",
+    "#handmadepresson",
+    "#witchcorenails",
+    "#darkacademianails",
+    "#spookyseason",
+    "#personalizednails"
   ],
-
   "secondaryOccasions": [
-    "sinh nhật",
-    "quà tặng",
-    "tiệc",
-    "sự kiện"
+    "Halloween parties",
+    "spooky season",
+    "gothic fashion",
+    "dark academia",
+    "witchcore",
+    "cosplay",
+    "photoshoots",
+    "fall fashion"
   ],
-
-  "instruction": "Halloween là chủ đề chính. Các dịp khác chỉ được nhắc nhẹ và không được chiếm trọng tâm."
+  "instruction": "Generate all captions in English. Halloween Nails and Gothic Nails are the two primary keyword themes. Focus on Halloween press-on nails, gothic press-on nails, black cat eye finishes, silver chrome artwork, moonstone-inspired accents, gothic jewelry-inspired details, and luxury handmade nail design. Secondary themes such as dark academia, witchcore, cosplay, photoshoots, and fall fashion may be mentioned naturally but should not overpower the main Halloween and Gothic nail themes."
 }

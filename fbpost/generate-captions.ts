@@ -59,17 +59,12 @@ const HISTORY_FILE = path.join(
 );
 
 /* =========================================================
-   FOOTER
+   ETSY LINK
    Gemini KHÔNG được viết phần này.
 ========================================================= */
 
-const FOOTER = `--------------------------------------------
-Đảo bánh quy
-📞 0859796267
-Zalo: 0945918855
-ADD1: 58 Nam Tràng, Trúc Bạch, Ba Đình, Hà Nội
-ADD2: 444/8/8 Thụy Khuê, Tây Hồ, Hà Nội
-ADD3: 24 Quan Nhân, Thanh Xuân, Hà Nội`;
+const FOOTER = `Love Coated Nail
+Shop: https://www.etsy.com/shop/LoveCoatedNail?section_id=59451169`;
 
 /* =========================================================
    TYPES
@@ -77,6 +72,7 @@ ADD3: 24 Quan Nhân, Thanh Xuân, Hà Nội`;
 
 interface CampaignConfig {
   currentCampaign: string;
+  etsySectionUrl?: string;
 }
 
 interface CampaignData {
@@ -425,7 +421,7 @@ const responseSchema = {
             type: "string",
 
             description:
-              "Caption Facebook tiếng Việt tự nhiên, dài vừa phải, có SEO nhưng không nhồi keyword."
+              "Natural English Facebook caption for a US audience, medium length, SEO-aware without keyword stuffing."
           },
 
           hashtags: {
@@ -483,354 +479,230 @@ Hashtags: ${item.hashtags.join(" ")}`
 
   const prompt = `
 
-Bạn đang viết nội dung Facebook cho shop ĐẢO BÁNH QUY.
+You are writing Facebook group marketing captions for Love Coated Nail, a handmade press-on nail brand targeting US customers.
 
-Hãy tạo ${count} caption khác nhau.
+Create ${count} different captions in natural English.
 
 ==================================================
-CAMPAIGN HIỆN TẠI
+CURRENT CAMPAIGN
 ==================================================
 
-Tên campaign:
+Campaign name:
 ${campaign.name}
 
-Keyword chính:
+Main keyword:
 ${campaign.mainKeyword}
 
 ==================================================
-NHÓM 1 — PRIMARY KEYWORDS
+PRIMARY SEO KEYWORDS
 ==================================================
 
-Đây là nhóm keyword quan trọng nhất.
+${campaign.primaryKeywords.map((keyword) => `- ${keyword}`).join("\n")}
 
-${campaign.primaryKeywords
-  .map(
-    (keyword) => `- ${keyword}`
-  )
-  .join("\n")}
+These are the most important keywords.
 
-Quy tắc:
-
-- Mỗi caption nên sử dụng 1–2 primary keywords.
-- Primary keyword có thể được lặp lại 2 lần trong caption
-  nếu nghe tự nhiên.
-- Không cần nhét tất cả primary keywords vào một bài.
+Rules:
+- Prioritize "Halloween Nails" and "Gothic Nails" as the main SEO themes when they are present in the campaign keywords.
+- Use the exact keyword naturally in the caption.
+- Prefer 1 primary keyword per caption, with occasional natural use of a second primary keyword.
+- Do not stuff keywords or write keyword lists.
 
 ==================================================
-NHÓM 2 — PRODUCT KEYWORDS
+PRODUCT KEYWORDS
 ==================================================
 
-${campaign.productKeywords
-  .map(
-    (keyword) => `- ${keyword}`
-  )
-  .join("\n")}
+${campaign.productKeywords.map((keyword) => `- ${keyword}`).join("\n")}
 
-Quy tắc:
-
-- Mỗi caption nên sử dụng khoảng 2–4 product keywords.
-- Có thể lặp lại một product keyword quan trọng
-  nếu phù hợp.
-- Không liệt kê keyword thành danh sách.
-- Keyword phải nằm trong câu tự nhiên.
+Use 2–4 relevant product keywords when they fit naturally.
 
 ==================================================
-NHÓM 3 — AUDIENCE KEYWORDS
+AUDIENCE KEYWORDS
 ==================================================
 
-${campaign.audienceKeywords
-  .map(
-    (keyword) => `- ${keyword}`
-  )
-  .join("\n")}
+${campaign.audienceKeywords.map((keyword) => `- ${keyword}`).join("\n")}
 
-Quy tắc:
-
-- Mỗi caption chọn 1–2 audience keywords nếu phù hợp.
-- Không cần caption nào cũng phải có audience keyword.
-- Luân phiên đối tượng giữa các caption.
+Use relevant audience keywords naturally when appropriate.
 
 ==================================================
 CONTENT ANGLES
 ==================================================
 
-${campaign.angles
-  .map(
-    (angle) => `- ${angle}`
-  )
-  .join("\n")}
+${campaign.angles.map((angle) => `- ${angle}`).join("\n")}
 
 ==================================================
 HASHTAGS
 ==================================================
 
-${campaign.hashtags
-  .map(
-    (hashtag) => `- ${hashtag}`
-  )
-  .join("\n")}
+${campaign.hashtags.map((hashtag) => `- ${hashtag}`).join("\n")}
 
 ==================================================
-CÁC DỊP PHỤ
+SECONDARY OCCASIONS
 ==================================================
 
-${
-  campaign.secondaryOccasions.length > 0
-    ? campaign.secondaryOccasions
-        .map(
-          (occasion) => `- ${occasion}`
-        )
-        .join("\n")
-    : "- Không có"
-}
+${campaign.secondaryOccasions.length > 0 ? campaign.secondaryOccasions.map((occasion) => `- ${occasion}`).join("\n") : "- None"}
 
 ==================================================
-INSTRUCTION CỦA CAMPAIGN
+CAMPAIGN INSTRUCTION
 ==================================================
 
 ${campaign.instruction}
 
 ==================================================
-ĐỘ DÀI
+PRODUCT INFORMATION
 ==================================================
 
-Caption không được quá ngắn.
+Love Coated Nail offers handmade press-on nails featuring:
+- premium soft gel
+- reusable press-on nails
+- magnetic cat eye finishes
+- silver chrome artwork
+- blue moonstone-inspired accents
+- gothic jewelry-inspired details
+- glossy salon-quality finish
+- complimentary Zodiac personalization
+- initial personalization
+- custom sizing, shape and length options
 
-Phần content nên khoảng:
+The current Halloween design is inspired by gothic cathedrals, moonlit nights, antique silver jewelry and Halloween magic.
 
-- 4–7 câu
-- hoặc khoảng 500–800 ký tự
+==================================================
+CURRENT HALLOWEEN PRODUCT
+==================================================
 
-Có thể dài hơn một chút nếu nội dung tự nhiên.
+The featured product is a luxury Halloween press-on nail set with:
+- black cat eye effects
+- luminous blue moonstone accents
+- sculptural silver chrome
+- gothic details
+- black, silver, deep blue and icy moonlight tones
 
-Không phải caption nào cũng có đúng cùng một số câu.
+It is suitable for Halloween parties, spooky season, gothic fashion, witchcore, dark academia, alternative fashion, cosplay, photoshoots and fall fashion.
 
-Luân phiên:
+==================================================
+WRITING STYLE
+==================================================
 
-- 4 câu
-- 5 câu
-- 6 câu
-- 7 câu
+Write in natural English for American Facebook users.
 
-để các bài không giống nhau.
+The captions should feel like a real small handmade nail brand posting in Facebook groups.
+
+Tone:
+- natural
+- warm
+- confident
+- visually descriptive
+- slightly conversational
+- premium but not overly formal
+- not corporate
+
+Avoid exaggerated marketing language and generic inspirational phrases.
+
+Do NOT write phrases such as:
+- "a little sweetness"
+- "send love"
+- "made with love"
+- "a gift from the heart"
+- "more than just nails"
+- "timeless elegance" unless genuinely relevant to the design
+- brochure-style language
+
+==================================================
+LENGTH
+==================================================
+
+Each caption should be around 4–7 sentences or roughly 500–800 characters.
+
+Vary the length and structure so the captions do not look templated.
 
 ==================================================
 SEO
 ==================================================
 
-Mục tiêu là có nhiều keyword liên quan trong cùng
-một caption nhưng vẫn phải đọc tự nhiên.
+SEO is important, but readability comes first.
 
-Ưu tiên cấu trúc:
+The exact phrases "Halloween Nails" and "Gothic Nails" should be strongly prioritized across the batch because they are the main search themes for this campaign.
 
-PRIMARY KEYWORD
-+
-PRODUCT KEYWORDS
-+
-AUDIENCE KEYWORD nếu phù hợp
+Naturally combine them with relevant phrases such as:
+- Halloween Press On Nails
+- Gothic Press On Nails
+- Gothic Fake Nails
+- Black Cat Eye Nails
+- Luxury Halloween Nails
+- Handmade Press On Nails
 
-Ví dụ:
+Do not create keyword lists.
 
-"20/10 nếu đang tìm quà tặng 20/10 cho mẹ, bạn gái
-hoặc đồng nghiệp thì có thể tham khảo các set bánh quy
-vẽ bên mình.
-
-Bên mình có bánh quy vẽ 20/10 với nhiều mẫu hoa,
-icing cookie và bánh quy handmade được trang trí thủ công.
-
-Các set bánh quy 20/10 có thể chọn mẫu và số lượng
-theo nhu cầu làm quà."
-
-Đây là kiểu SEO mong muốn.
-
-Keyword có thể xuất hiện nhiều lần.
-
-Nhưng:
-
-KHÔNG được viết:
-
-"quà 20/10, quà tặng 20/10, bánh quy 20/10,
-bánh quy vẽ 20/10, quà 20/10..."
-
-Keyword phải nằm trong câu hoàn chỉnh.
+Example of the desired style:
+"Looking for Halloween Nails with a darker, more gothic feel? This handmade set combines black cat eye gel, icy blue moonstone accents and silver chrome details inspired by antique gothic jewelry. If you love Gothic Nails but still want something wearable and polished, this set brings the spooky details without looking costume-like..."
 
 ==================================================
-GIỌNG VĂN
+ETSY LINK
 ==================================================
 
-Viết như người bán hàng thật đăng Facebook group.
+The Etsy section link is:
+https://www.etsy.com/shop/LoveCoatedNail?section_id=59451169
 
-Giọng:
+Do NOT invent another Etsy URL.
 
-- tự nhiên
-- trực tiếp
-- thân thiện
-- rõ ràng
-- hơi đời thường
-- giống shop nhỏ tự đăng bài
-- không quá chuyên nghiệp
-- không quá trau chuốt
-
-Có thể dùng:
-
-- "bên mình"
-- "shop"
-- "mình"
-- "ạ"
-- "nhé"
-- "ai đang tìm..."
-- "nếu đang cần..."
-- "có thể tham khảo..."
-- "shop có..."
-- "inbox shop..."
-
-Nhưng không được lặp một câu trong mọi caption.
+The code will automatically append this exact Etsy link to every final caption, so you do not need to include the URL yourself in the generated content.
 
 ==================================================
-KHÔNG ĐƯỢC VIẾT VĂN HOA
+CTA
 ==================================================
 
-Tuyệt đối hạn chế hoặc tránh các câu:
+Use a natural CTA when appropriate, such as:
+- "See the full set on Etsy"
+- "Take a closer look on Etsy"
+- "Shop the Halloween collection on Etsy"
+- "If this is your style, the full set is on Etsy"
 
-- "trao gửi yêu thương"
-- "gửi trọn yêu thương"
-- "món quà chứa đựng yêu thương"
-- "ngọt ngào và ý nghĩa"
-- "một chút ngọt ngào cho ngày đặc biệt"
-- "thay bạn gửi lời yêu thương"
-- "món quà nhỏ nhưng mang cả tấm lòng"
-- "chạm đến trái tim"
-- "đong đầy cảm xúc"
-- "ghi dấu khoảnh khắc"
-- "lưu giữ những kỷ niệm"
-- "không chỉ là một món quà"
-- "đặc biệt hơn bao giờ hết"
-
-Không viết theo phong cách brochure.
+Do not use the Etsy URL inside the generated content because the code adds it automatically.
 
 ==================================================
-EMOJI
+PERSONALIZATION
 ==================================================
 
-Mỗi caption tối đa 1–2 emoji.
+Mention personalization selectively, not in every caption.
 
-Không cần emoji nếu không phù hợp.
-
-==================================================
-SẢN PHẨM
-==================================================
-
-Shop có:
-
-- bánh quy vẽ
-- bánh quy vẽ hình
-- icing cookie
-- bánh quy handmade
-- bánh quy trang trí
-- bánh quy hoa
-- set bánh quy
-- set quà tặng
-
-Có thể đề cập:
-
-- vẽ thủ công
-- nhiều mẫu
-- nhiều chủ đề
-- đóng túi riêng từng chiếc
-- phù hợp làm quà
-- có thể chọn mẫu
-- có thể chọn số lượng
-- inbox shop để xem thêm mẫu
-
-Không được tự bịa:
-
-- giá
-- giảm giá
-- freeship
-- thành phần
-- chứng nhận
-- giải thưởng
-- tồn kho
-- thời gian giao hàng
-- thông tin không được cung cấp.
+Customers can choose:
+- Zodiac sign
+- initial A–Z
+- nail size
+- nail shape
+- nail length
+- additional customization when possible
 
 ==================================================
-CAMPAIGN
+WHAT NOT TO INVENT
 ==================================================
 
-Campaign hiện tại phải là trọng tâm.
-
-Ví dụ campaign là 20/10:
-
-Phần lớn caption phải có ý rõ ràng về:
-
-- 20/10
-- quà 20/10
-- nhu cầu tìm quà
-- người nhận quà
-- bánh làm quà 20/10
-
-Không nhất thiết caption nào cũng bắt đầu bằng "20/10".
-
-Không nhất thiết caption nào cũng phải dùng
-đúng cụm "quà tặng 20/10".
-
-Nhưng đọc caption phải hiểu sản phẩm đang được
-gợi ý cho campaign hiện tại.
-
-Các dịp phụ chỉ được nhắc nhẹ.
+Do not invent:
+- discounts
+- prices
+- free shipping
+- reviews
+- stock quantities
+- awards
+- certifications
+- ingredients not provided
+- delivery promises beyond the supplied product information
 
 ==================================================
-ĐA DẠNG
+CAPTION HISTORY
 ==================================================
 
-${count} caption phải khác nhau.
+Do not copy or closely paraphrase these previous captions:
 
-Luân phiên:
-
-- cách mở bài
-- keyword
-- audience
-- content angle
-- số câu
-- độ dài
-- CTA
-- cách mô tả sản phẩm
-
-Không được tạo 5 bài cùng một form rồi chỉ thay keyword.
-
-==================================================
-CAPTION CŨ
-==================================================
-
-Không được copy hoặc paraphrase quá gần những caption:
-
-${
-  previousExamples ||
-  "(Chưa có caption cũ.)"
-}
-
-==================================================
-FOOTER
-==================================================
-
-Không viết:
-
-- số điện thoại
-- Zalo
-- địa chỉ
-- footer
-
-Footer sẽ được code tự động thêm.
+${previousExamples || "(No previous captions.)"}
 
 ==================================================
 OUTPUT
 ==================================================
 
-Chỉ trả về JSON đúng schema.
+Return JSON matching the provided schema.
 
-Phải tạo đủ ${count} caption.
-`;
+Create exactly ${count} captions.
+`
 
   try {
 
@@ -1052,16 +924,16 @@ function buildFullCaption(
 ): GeneratedCaption {
 
   const hashtagText =
-    caption.hashtags.join(
-      " "
-    );
+    caption.hashtags.join(" ");
 
-  const fullCaption =
-`${caption.content}
+  const etsyLink =
+    "https://www.etsy.com/shop/LoveCoatedNail?section_id=59451169";
+
+  const fullCaption = `${caption.content}
 
 ${hashtagText}
 
-${FOOTER}`;
+${etsyLink}`;
 
   return {
     ...caption,
