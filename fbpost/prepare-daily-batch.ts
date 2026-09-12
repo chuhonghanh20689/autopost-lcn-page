@@ -451,74 +451,107 @@ async function main(): Promise<void> {
       )
     );
 
-  let eligibleGroups =
-    groups
-      .map((group, index) => ({
-        group,
-        originalIndex: index
-      }))
-      .filter(
-        (item) =>
-          item.originalIndex >=
-            state.nextGroupIndex &&
-          !blockedUrls.has(
-            item.group.url
-          )
-      );
+  /*
+   * 7.1. Đồng bộ state với blocked-groups.json
+   *
+   * nextGroupIndex có thể đang trỏ đúng vào một group đã bị block.
+   * Trong trường hợp đó phải tiến state qua các group bị block
+   * trước khi tạo batch, để batch.startGroupIndex luôn khớp
+   * posting-state mà post-daily.ts kiểm tra.
+   */
+  while (
+    state.nextGroupIndex < groups.length &&
+    blockedUrls.has(groups[state.nextGroupIndex].url)
+  ) {
+    console.log(
+      `⏭️ Group ${state.nextGroupIndex + 1} đang bị block → bỏ qua.`
+    );
+
+    state.nextGroupIndex += 1;
+  }
 
   /*
-   * Nếu đã chạy hết phần còn lại của groups.json:
-   * - Bắt đầu một vòng mới từ group đầu tiên.
-   * - Vẫn giữ blocked-groups.json làm danh sách loại trừ.
-   * - Không reset totalPosted.
+   * Nếu đã đi hết danh sách sau khi bỏ qua các group bị block,
+   * bắt đầu vòng mới từ đầu và tìm group hợp lệ đầu tiên.
    */
-  if (eligibleGroups.length === 0) {
+  if (state.nextGroupIndex >= groups.length) {
     console.log(
-      "\n🔄 Đã chạy hết vòng hiện tại."
-    );
-
-    console.log(
-      `📌 nextGroupIndex hiện tại: ${state.nextGroupIndex}`
-    );
-
-    console.log(
-      "🔁 Reset về group đầu tiên để bắt đầu vòng mới."
+      "\n🔄 Đã đi hết vòng hiện tại sau khi bỏ qua group bị block."
     );
 
     state.nextGroupIndex = 0;
 
-    writeJson(
-      STATE_FILE,
-      state
+    while (
+      state.nextGroupIndex < groups.length &&
+      blockedUrls.has(groups[state.nextGroupIndex].url)
+    ) {
+      state.nextGroupIndex += 1;
+    }
+
+    writeJson(STATE_FILE, state);
+  }
+
+  let eligibleGroups = groups
+    .map((group, index) => ({
+      group,
+      originalIndex: index,
+    }))
+    .filter(
+      (item) =>
+        item.originalIndex >= state.nextGroupIndex &&
+        !blockedUrls.has(item.group.url)
     );
 
-    eligibleGroups =
-      groups
-        .map((group, index) => ({
-          group,
-          originalIndex: index
-        }))
-        .filter(
-          (item) =>
-            !blockedUrls.has(
-              item.group.url
-            )
-        );
+  /*
+   * Nếu phần còn lại của vòng hiện tại không đủ DAILY_LIMIT:
+   * - Lấy hết group hợp lệ còn lại ở cuối vòng.
+   * - Sau đó quay về đầu groups.json.
+   * - Lấy tiếp group hợp lệ từ đầu cho đủ DAILY_LIMIT.
+   *
+   * blocked-groups.json vẫn luôn được giữ làm danh sách loại trừ.
+   */
+  if (eligibleGroups.length < DAILY_LIMIT) {
+    console.log(
+      `\n🔄 Cuối vòng hiện tại chỉ còn ${eligibleGroups.length} group hợp lệ.`
+    );
 
-    /*
-     * Trường hợp tất cả group đều bị block.
-     */
-    if (eligibleGroups.length === 0) {
-      console.log(
-        "\n🚫 Không còn group hợp lệ nào."
+    const firstPart = eligibleGroups;
+
+    const selectedUrls = new Set(
+      firstPart.map((item) => item.group.url)
+    );
+
+    const wrappedGroups = groups
+      .map((group, index) => ({
+        group,
+        originalIndex: index,
+      }))
+      .filter(
+        (item) =>
+          !blockedUrls.has(item.group.url) &&
+          !selectedUrls.has(item.group.url)
       );
 
-      console.log(
-        `🚫 Group bị block: ${blockedGroups.length}`
-      );
+    const needed = DAILY_LIMIT - firstPart.length;
 
-      return;
-    }
+    console.log(
+      `🔁 Quay lại đầu danh sách, lấy thêm ${needed} group.`
+    );
+
+    eligibleGroups = [
+      ...firstPart,
+      ...wrappedGroups.slice(0, needed),
+    ];
+  }
+
+  if (eligibleGroups.length === 0) {
+    console.log("\n🚫 Không còn group hợp lệ nào.");
+
+    console.log(
+      `🚫 Group bị block: ${blockedGroups.length}`
+    );
+
+    return;
   }
 
   const selectedEntries =
